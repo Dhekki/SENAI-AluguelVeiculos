@@ -6,6 +6,8 @@
 #define MAXCLIENTES 100
 #define MAXLOCACOES 200
 
+int codigo=0;
+
 struct veiculo {
     int codigo;
     int ano;
@@ -15,14 +17,14 @@ struct veiculo {
 };
 
 struct cliente {
-    int id;
+    int codigo;
     char nome[50];
     char cpf[15];
     char senha[20];
 };
 
 struct locacao {
-    int codigo;
+	int codigoloc;
     int codigoCliente;
     int codigoVeiculo;
     char dataInicio[11];
@@ -34,6 +36,8 @@ struct veiculo veiculos[MAXVEICULOS];
 struct cliente clientes[MAXCLIENTES];
 struct locacao locacoes[MAXLOCACOES];
 
+void locar(){
+}
 void cadastrarVeiculo(){
 	
 }
@@ -48,6 +52,21 @@ void cadastrarCliente(){
 void encerrarLocacao(){
 }
 void listarLocacoesAtivas(){
+	if (codigo==0){
+	printf("\nAinda Não há Locações !");
+	sleep(3);
+	system("cls");
+	}
+	else{
+	printf("\n===== Locações =====\n");
+	for(int i=0;i<codigo;i++){
+		int idcliente,idveiculo;
+		idcliente = locacoes[i].codigoCliente;
+		idveiculo = locacoes[i].codigoVeiculo;
+		printf("\n %i- cliente : %s \n Veículo: %s \n Data da locação: %s até %s \n Valor Total: R$ %f",i+1,clientes[idcliente].nome,veiculos[idveiculo].modelo,locacoes[i].dataInicio,locacoes[i].dataFim,locacoes[i].valorTotal);
+		printf("\n__________________");}
+	}
+	
 }
 void buscarLocacoesAtivasPorCliente(){
 }
@@ -62,10 +81,9 @@ int menu();
 
 void login() {
     char email[50], senha[40];
-    printf("Antes de entrar no sistema faça o login:\n");
-    sleep(2);
+    printf("Login\n");
 
-    while (true) {
+    while (1) {
         printf("\nE-mail: ");
         fgets(email, (50), stdin);
         printf("\nSenha: ");
@@ -82,13 +100,15 @@ void login() {
 
 int menu() {
     int opcao;
-    while (true) {
-        printf("Bem vindo ao sistema de aluguel de veículos!\n");
-        sleep(3);
-        system("cls");
+    system("cls");
+	printf("Bem vindo ao sistema de aluguel de veículos!\n");
+    sleep(3);
+    system("cls");
+	
+	while (1) {
 
-        printf("\nMenu:\n");
         printf("\\----------------------------------------//\n");
+		printf("\nMenu:\n");
         printf("\n 1 - cadastrar veículos ");
         printf("\n 2 - remover veículos ");
         printf("\n 3 - listar veículos disponíveis ");
@@ -107,13 +127,14 @@ int menu() {
 
         switch (opcao) {
             case 1:
-                cadastrarVeiculo();
+                locar();
+                codigo++;
                 break;
             case 2:
-                removerVeiculo();
+                cadastrarVeiculo();
                 break;
             case 3:
-                listarVeiculo();
+                removerVeiculo();
                 break;
             case 4:
                 simular();
@@ -137,9 +158,12 @@ int menu() {
                 listarLocacoesEFaturamentoPorPeriodo();
                 break;
             case 11:
-                encerrar();
-                return (0);
-            default:
+                listarVeiculo();
+                break;
+            case 12:
+            	encerrar();
+            	return 0;
+			default:
                 printf("Opção inválida!\n");
                 break;
         }
