@@ -62,7 +62,7 @@ int menu();
 
 void login() {
     char email[50], senha[40];
-    printf("Antes de entrar no sistema faça o login:\n");
+    printf("Antes de entrar no sistema faÃ§a o login:\n");
     sleep(2);
 
     while (true) {
@@ -83,22 +83,22 @@ void login() {
 int menu() {
     int opcao;
     while (true) {
-        printf("Bem vindo ao sistema de aluguel de veículos!\n");
+        printf("Bem vindo ao sistema de aluguel de veÃ­culos!\n");
         sleep(3);
         system("cls");
 
         printf("\nMenu:\n");
         printf("\\----------------------------------------//\n");
-        printf("\n 1 - cadastrar veículos ");
-        printf("\n 2 - remover veículos ");
-        printf("\n 3 - listar veículos disponíveis ");
-        printf("\n 4 - simular locação ");
+        printf("\n 1 - cadastrar veÃ­culos ");
+        printf("\n 2 - remover veÃ­culos ");
+        printf("\n 3 - listar veÃ­culos disponÃ­veis ");
+        printf("\n 4 - simular locaÃ§Ã£o ");
         printf("\n 5 - cadastrar cliente ");
-        printf("\n 6 - encerrar locações ");
-        printf("\n 7 - listar todas as locações ativas ");
-        printf("\n 8 - buscar locações ativas por cliente ");
-        printf("\n 9 - buscar locações ativas por veículo ");
-        printf("\n 10 - listar locações e faturamento por período ");
+        printf("\n 6 - encerrar locaÃ§Ãµes ");
+        printf("\n 7 - listar todas as locaÃ§Ãµes ativas ");
+        printf("\n 8 - buscar locaÃ§Ãµes ativas por cliente ");
+        printf("\n 9 - buscar locaÃ§Ãµes ativas por veÃ­culo ");
+        printf("\n 10 - listar locaÃ§Ãµes e faturamento por perÃ­odo ");
         printf("\n 11 - encerrar \n");
         printf("\\----------------------------------------//\n");
         printf("\nOpcao: ");
@@ -140,7 +140,7 @@ int menu() {
                 encerrar();
                 return (0);
             default:
-                printf("Opção inválida!\n");
+                printf("OpÃ§Ã£o invÃ¡lida!\n");
                 break;
         }
     }
