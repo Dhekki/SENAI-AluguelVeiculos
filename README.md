@@ -71,4 +71,7 @@ Exemplo de compilação (Linux/macOS):
 gcc main.c cliente.c veiculo.c locacao.c utils.c -o locadora
 ./locadora
 
+## 📌 Licença
+
+Este projeto está licenciado sob a licença [MIT](./LICENSE).
 
