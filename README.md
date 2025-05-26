@@ -59,6 +59,10 @@ Desenvolver um código em linguagem C que simule uma **empresa de aluguel de car
 
 ---
 
+## 📌 Licença
+
+Este projeto está licenciado sob a licença [MIT](./LICENSE).
+
 ## 🏁 Como Executar
 
 1. Compile o projeto com um compilador C (como `gcc`);
@@ -70,8 +74,3 @@ Exemplo de compilação (Linux/macOS):
 ```bash
 gcc main.c cliente.c veiculo.c locacao.c utils.c -o locadora
 ./locadora
-
-## 📌 Licença
-
-Este projeto está licenciado sob a licença [MIT](./LICENSE).
-
