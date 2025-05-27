@@ -30,38 +30,52 @@ Desenvolver um código em linguagem C que simule uma **empresa de aluguel de car
 
 ## 👥 Equipe de Desenvolvimento
 
-- Ryan Cerqueira Brandão
-- Gabriel Costa de Jesus
-- Edney Novais
-- Hiram Bahia
-- Gabriel Oliveira
+- Ryan Cerqueira Brandão  
+- Gabriel Costa de Jesus  
+- Edney Novais  
+- Hiram Bahia  
+- Gabriel Oliveira  
 
 ---
 
 ## ✅ Funcionalidades Implementadas
 
-- [x] Cadastro de clientes
-- [x] Cadastro de veículos
-- [x] Locação de veículos
-- [x] Encerramento de locações
-- [x] Listagem e busca de locações
-- [x] Relatório por período
-- [x] Simulação de valores
+- [x] Cadastro de clientes  
+- [x] Cadastro de veículos  
+- [x] Locação de veículos  
+- [x] Encerramento de locações  
+- [x] Listagem e busca de locações  
+- [x] Relatório por período  
+- [x] Simulação de valores  
 
 *(Conforme forem sendo concluídas novas funções, essa lista pode ser atualizada.)*
 
 ---
 
-## 💡 Observações
+## 📂 Organização do Projeto
 
-- O projeto é totalmente feito em C, com foco em lógica e estruturação de dados.
-- Não utiliza banco de dados nem interface gráfica — apenas console.
+A organização da equipe, com as funções de cada integrante e divisão de tarefas, está detalhada na Issue abaixo:  
+🔗 [Organização da Equipe e Divisão de Funções](https://github.com/Dhekki/SENAI-AluguelVeiculos/issues/1)
 
 ---
 
-## 📌 Licença
+## 📘 Acesse a Wiki do Projeto
 
-Este projeto está licenciado sob a licença [MIT](./LICENSE).
+A Wiki reúne informações complementares e fundamentais para quem estiver trabalhando no projeto, incluindo:
+
+- 📦 Como clonar o repositório  
+- 🧪 Padrões de commit utilizados  
+- ⚙️ Detalhes técnicos do código  
+- 🧭 Navegação geral do repositório  
+
+👉 [Clique aqui para acessar a Wiki](https://github.com/Dhekki/SENAI-AluguelVeiculos/wiki)
+
+---
+
+## 💡 Observações
+
+- O projeto é totalmente feito em C, com foco em lógica e estruturação de dados.  
+- Não utiliza banco de dados nem interface gráfica — apenas console.
 
 ---
 
