@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
+#inlcude <time.h>
+
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
 #define MAXLOCACOES 200
