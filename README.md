@@ -30,7 +30,7 @@ Desenvolver um código em linguagem C que simule uma **empresa de aluguel de car
 
 ## 👥 Equipe de Desenvolvimento
 
-1. Edney Novais
+1. Ediney Novaes
 2. Gabriel Costa de Jesus
 3. Gabriel Oliveira
 4. Hiram Bahia
