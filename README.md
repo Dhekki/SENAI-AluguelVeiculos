@@ -30,11 +30,11 @@ Desenvolver um código em linguagem C que simule uma **empresa de aluguel de car
 
 ## 👥 Equipe de Desenvolvimento
 
-- Ryan Cerqueira Brandão  
-- Gabriel Costa de Jesus  
-- Edney Novais  
-- Hiram Bahia  
-- Gabriel Oliveira  
+1. Edney Novais
+2. Gabriel Costa de Jesus
+3. Gabriel Oliveira
+4. Hiram Bahia
+5. Ryan Cerqueira Brandão
 
 ---
 
