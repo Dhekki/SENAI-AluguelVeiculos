@@ -126,48 +126,165 @@ void listarClientes() {
     system("pause");
 }
 
-void locar(){
-    if (qntdVeiculos==0 || qntdClientes==0){
-	printf("\nCadastre Veículos/Clientes Primeiro !");
-	}
-    
-    else{
-    int op,codecar,codecliente;
-    
-    while(1){printf("\nEscolha uma oção: ");
-    printf("\n1-Locar:");
-    printf("\n2-Listar Veículos Disponíveis:");
-    printf("\n3-Listar Clientes:");
-    scanf("%i",&op);
-        switch(op){
-            case 1 :            
-            printf("Código do Veículo:");
-            scanf("%i",&locacoes[qntdlocacoes].codigoVeiculo);
-            
-            printf("Código do cliente:");
-            scanf("%i",&locacoes[qntdlocacoes].codigoCliente);
-            
-            printf("Data de inicio da Locação:");
-            fgets(locacoes[qntdlocacoes].dataInicio,11,stdin);
-            
-            printf("Data Final da Locação:");
-            fgets(locacoes[qntdlocacoes].dataFim,11,stdin);
-            qntdlocacoes++;
-            return;
-            case 2 :
-            listarVeiculo();
-            break;
-            case 3 :
-            listarClientes();
-            break;
-            default:
-            printf("Opção inválida!\n");
-            break;
+void locar() {
+    if (qntdVeiculos == 0 || qntdClientes == 0) {
+        printf("\nCadastre Veículos/Clientes Primeiro !\n");
+        return;
+    }
 
+    char input[20];
+    int op;
+
+    while (1) {
+        printf("\nEscolha uma opção: ");
+        printf("\n1 - Locar");
+        printf("\n2 - Listar Veículos Disponíveis");
+        printf("\n3 - Listar Clientes\nOpção: ");
+        
+        fgets(input, sizeof(input), stdin);
+        if (sscanf(input, "%d", &op) != 1) {
+            printf("Entrada inválida! Tente novamente.\n");
+            continue;
+        }
+
+        switch (op) {
+            case 1: {
+                int codigoVeiculo, codigoCliente;
+                char dataInicio[20], dataFim[20]; // espaço maior para evitar overflow
+
+                printf("Código do Veículo: ");
+                fgets(input, sizeof(input), stdin);
+                if (sscanf(input, "%d", &codigoVeiculo) != 1) {
+                    printf("Código inválido!\n");
+                    break;
+                }
+
+                // Verifica se veículo existe
+                int indexVeiculo = -1;
+                for (int i = 0; i < qntdVeiculos; i++) {
+                    if (veiculos[i].codigo == codigoVeiculo) {
+                        indexVeiculo = i;
+                        break;
+                    }
+                }
+                if (indexVeiculo == -1) {
+                    printf("Veículo não encontrado!\n");
+                    break;
+                }
+
+                // Verifica se veículo já está locado
+                for (int i = 0; i < qntdlocacoes; i++) {
+                    if (locacoes[i].codigoVeiculo == codigoVeiculo) {
+                        printf("Este veículo já está locado!\n");
+                        return;
+                    }
+                }
+
+                printf("Código do Cliente: ");
+                fgets(input, sizeof(input), stdin);
+                if (sscanf(input, "%d", &codigoCliente) != 1) {
+                    printf("Código inválido!\n");
+                    break;
+                }
+
+                // Verifica se cliente existe
+                int indexCliente = -1;
+                for (int i = 0; i < qntdClientes; i++) {
+                    if (clientes[i].codigo == codigoCliente) {
+                        indexCliente = i;
+                        break;
+                    }
+                }
+                if (indexCliente == -1) {
+                    printf("Cliente não encontrado!\n");
+                    break;
+                }
+
+                printf("Data de início da Locação (dd/mm/aaaa): ");
+                if (fgets(dataInicio, sizeof(dataInicio), stdin) == NULL) {
+                    printf("Erro ao ler data!\n");
+                    break;
+                }
+                dataInicio[strcspn(dataInicio, "\n")] = '\0'; // remove \n
+
+                printf("Data Final da Locação (dd/mm/aaaa): ");
+                if (fgets(dataFim, sizeof(dataFim), stdin) == NULL) {
+                    printf("Erro ao ler data!\n");
+                    break;
+                }
+                dataFim[strcspn(dataFim, "\n")] = '\0'; // remove \n
+
+                int d1, m1, a1, d2, m2, a2;
+
+                // Usar sscanf direto em variáveis inteiras para validação mais simples
+                if (sscanf(dataInicio, "%d/%d/%d", &d1, &m1, &a1) != 3) {
+                    printf("Formato inválido da data de início!\n");
+                    break;
+                }
+                if (sscanf(dataFim, "%d/%d/%d", &d2, &m2, &a2) != 3) {
+                    printf("Formato inválido da data final!\n");
+                    break;
+                }
+
+                // Ajuste para tm struct (meses 0-11, anos desde 1900)
+                struct tm inicio = {0}, fim = {0};
+                inicio.tm_mday = d1;
+                inicio.tm_mon = m1 - 1;
+                inicio.tm_year = a1 - 1900;
+                fim.tm_mday = d2;
+                fim.tm_mon = m2 - 1;
+                fim.tm_year = a2 - 1900;
+
+                time_t t_inicio = mktime(&inicio);
+                time_t t_fim = mktime(&fim);
+
+                if (t_inicio == -1 || t_fim == -1) {
+                    printf("Erro ao converter datas!\n");
+                    break;
+                }
+
+                double diff_secs = difftime(t_fim, t_inicio);
+                int dias = (int)(diff_secs / (60 * 60 * 24));
+
+                if (dias <= 0) {
+                    printf("Período inválido! A data final deve ser após a data de início.\n");
+                    break;
+                }
+
+                // Preenche a locação
+                struct Locacao novaLocacao;
+                novaLocacao.codigoloc = qntdlocacoes + 1;
+                novaLocacao.codigoVeiculo = codigoVeiculo;
+                novaLocacao.codigoCliente = codigoCliente;
+                strcpy(novaLocacao.dataInicio, dataInicio);
+                strcpy(novaLocacao.dataFim, dataFim);
+                novaLocacao.valorTotal = veiculos[indexVeiculo].precoPorDia * dias;
+
+                locacoes[qntdlocacoes] = novaLocacao;
+                qntdlocacoes++;
+
+                printf("\nLocação registrada com sucesso!\n");
+                printf("Quantidade de dias: %d\n", dias);
+                printf("Valor total: R$ %.2f\n", novaLocacao.valorTotal);
+                system("pause");
+                return;
+            }
+            case 2:
+                listarVeiculo();
+                break;
+            case 3:
+                listarClientes();
+                break;
+            default:
+                printf("Opção inválida!\n");
+                break;
         }
     }
 }
-}
+
+
+
+
 void cadastrarVeiculo(){
     limparBuffer();
     int placaValida = 0;
@@ -285,22 +402,29 @@ void cadastrarCliente(){
 void encerrarLocacao(){
 }
 void listarLocacoesAtivas(){
-	if (qntdlocacoes==0){
-	printf("\nAinda Não há Locações !");
-	sleep(3);
-	system("cls");
-	}
-	else{
-	printf("\n===== Locações =====\n");
-	for(int i=0;i<qntdlocacoes;i++){
-		int idcliente,idveiculo;
-		idcliente = locacoes[i].codigoCliente;
-		idveiculo = locacoes[i].codigoVeiculo;
-		printf("\n %i- cliente : %s \n Veículo: %s \n Data da locação: %s até %s \n Valor Total: R$ %f",i+1,clientes[idcliente].nome,veiculos[idveiculo].modelo,locacoes[i].dataInicio,locacoes[i].dataFim,locacoes[i].valorTotal);
-		printf("\n__________________");}
-	}
-	
+    if (qntdlocacoes == 0){
+        printf("\nAinda Não há Locações !");
+        sleep(3);
+        system("cls");
+    }
+    else{
+        printf("\n===== Locações =====\n");
+        for(int i = 0; i < qntdlocacoes; i++){
+            int idcliente = locacoes[i-1].codigoCliente;
+            int idveiculo = locacoes[i-1].codigoVeiculo;
+            printf("\n %i- cliente : %s \n Veículo: %s \n Data da locação: %s até %s \n Valor Total: R$ %.2f",
+                i + 1,
+                clientes[idcliente].nome,
+                veiculos[idveiculo].modelo,
+                locacoes[i].dataInicio,
+                locacoes[i].dataFim,
+                locacoes[i].valorTotal);
+            printf("\n__________________");
+        }
+    }
+    system("pause");
 }
+
 void buscarLocacoesAtivasPorCliente(){
 
 }
@@ -377,31 +501,31 @@ void login() {
 int menu() {
     system("cls");
     int opcao;
-    printf("Bem vindo ao sistema de aluguel de veículos!\n");
+    printf("Bem-vindo ao sistema de aluguel de veículos!\n");
     sleep(2);
-    
+
     while (1) {
         limparBuffer();
-        printf("\\\\----------------------------------------//\n");
+        printf("\\----------------------------------------//\n");
         printf("\nMenu:\n");
-        
+
         printf("\n 1 - Fazer uma locação");                       
         printf("\n 2 - Cadastrar veículos");
         printf("\n 3 - Remover veículos");
         printf("\n 4 - Listar veículos disponíveis");
-        printf("\n 5 - Simular uma locação");
-        printf("\n 6 - Cadastrar cliente");
-        printf("\n 7 - Encerrar locações");
-        printf("\n 8 - Listar todas as locações ativas");
-        printf("\n 9 - Buscar locações ativas por cliente");
-        printf("\n 10 - Buscar locações ativas por veículo");
-        printf("\n 11 - Listar locações e faturamento por período");
-        printf("\n 12 - Encerrar\n");
-        printf("\\\----------------------------------------//\n");
-        
+        printf("\n 5 - Listar clientes");
+        printf("\n 6 - Simular uma locação");
+        printf("\n 7 - Cadastrar cliente");
+        printf("\n 8 - Encerrar locações");
+        printf("\n 9 - Listar todas as locações ativas");
+        printf("\n10 - Buscar locações ativas por cliente");
+        printf("\n11 - Buscar locações ativas por veículo");
+        printf("\n12 - Listar locações e faturamento por período");
+        printf("\n13 - Encerrar\n");
+        printf("\\\\----------------------------------------//\n");
+
         printf("\nOpcao: ");
         scanf("%i", &opcao);
-        
         limparBufferDentro();
 
         switch (opcao) {
@@ -418,7 +542,7 @@ int menu() {
                 listarVeiculo();
                 break;
             case 5:
-                listarClientes(); // <- nova chamada aqui
+                listarClientes();
                 break;
             case 6:
                 simular();
@@ -451,6 +575,7 @@ int menu() {
         clearDelay();
     }
 }
+
 
 
 
