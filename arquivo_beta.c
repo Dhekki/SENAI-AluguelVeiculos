@@ -10,7 +10,7 @@
 #define ARQUIVO_VEICULOS "veiculos.dat"
 #define ARQUIVO_CLIENTES "clientes.dat"
 
-int codigo = 0, qntdClientes = 0, qntdVeiculos = 0;
+int qntdlocacoes = 0, qntdClientes = 0, qntdVeiculos = 0;
 
 struct Veiculo {
     int codigo;
@@ -105,8 +105,47 @@ int validarPlaca(char placa[]) {
 }
 
 void locar(){
-}
+    if (qntdVeiculos==0 || qntdClientes==0){
+	printf("\nCadastre Veículos/Clientes Primeiro !");
+	}
+    
+    else{
+    int op,codecar,codecliente;
+    
+    while(1){printf("\nEscolha uma oção: ");
+    printf("\n1-Locar:");
+    printf("\n2-Listar Veículos Disponíveis:");
+    printf("\n3-Listar Clientes:");
+    scanf("%i",&op);
+        switch(op){
+            case 1 :            
+            printf("Código do Veículo:");
+            scanf("%i",&locacoes[qntdlocacoes].codigoVeiculo);
+            
+            printf("Código do cliente:");
+            scanf("%i",&locacoes[qntdlocacoes].codigoCliente);
+            
+            printf("Data de inicio da Locação:");
+            fgets(locacoes[qntdlocacoes].dataInicio,11,stdin);
+            
+            printf("Data Final da Locação:");
+            fgets(locacoes[qntdlocacoes].dataFim,11,stdin);
+            qutdlocacoes++;
+            return(0);
+            case 2 :
+            listarVeiculo();
+            break;
+            case 3 :
+            listarClientes();
+            break;
+            default:
+            printf("Opção inválida!\n");
+            break;
 
+        }
+    }
+}
+}
 void cadastrarVeiculo(){
     limparBuffer();
     int placaValida = 0;
@@ -150,6 +189,9 @@ void cadastrarVeiculo(){
     printf("\\----------------------------------------//\n");
 }
 void removerVeiculo(){
+}
+void listarclientes(){
+
 }
 void listarVeiculo(){
 }
@@ -195,14 +237,14 @@ void cadastrarCliente(){
 void encerrarLocacao(){
 }
 void listarLocacoesAtivas(){
-	if (codigo==0){
+	if (qutdlocacoes==0){
 	printf("\nAinda Não há Locações !");
 	sleep(3);
 	system("cls");
 	}
 	else{
 	printf("\n===== Locações =====\n");
-	for(int i=0;i<codigo;i++){
+	for(int i=0;i<qutdlocacoes;i++){
 		int idcliente,idveiculo;
 		idcliente = locacoes[i].codigoCliente;
 		idveiculo = locacoes[i].codigoVeiculo;
@@ -214,7 +256,7 @@ void listarLocacoesAtivas(){
 void buscarLocacoesAtivasPorCliente(){
 }
 void buscarLocacoesAtivasPorVeiculo(){
-    if (codigo==0){
+    if (qutdlocacoes==0){
         printf("\nAinda Não há Locações !");
         sleep(3);
         system("cls");
@@ -229,14 +271,14 @@ void buscarLocacoesAtivasPorVeiculo(){
     fgets(carro, sizeof(carro), stdin);
     carro[strcspn(carro, "\n")] = 0;
 
-    for(int i=0;i<codigo;i++){
+    for(int i=0;i<qutdlocacoes;i++){
         if(_stricmp(veiculos[i].modelo , carro)==0){
             codecar = veiculos[i].codigo;
         }
     }
     printf("\nLocações encontradas: ");
-    for(int i=0;i<codigo;i++){
-        for(int j=0;j<codigo;j++){
+    for(int i=0;i<qutdlocacoes;i++){
+        for(int j=0;j<qutdlocacoes;j++){
         if(locacoes[i].codigoCliente == clientes[j].codigo){
             strcpy(nomecliente,clientes[j].nome);
             break;
@@ -300,14 +342,15 @@ int menu() {
         printf("\n 2 - Cadastrar veículos");
         printf("\n 3 - Remover veículos");
         printf("\n 4 - Listar veículos disponíveis");
-        printf("\n 5 - Simular uma locação");
-        printf("\n 6 - Cadastrar cliente");
-        printf("\n 7 - Encerrar locações");
-        printf("\n 8 - Listar todas as locações ativas");
-        printf("\n 9 - Buscar locações ativas por cliente");
-        printf("\n 10 - Buscar locações ativas por veículo");
-        printf("\n 11 - Listar locações e faturamento por período");
-        printf("\n 12 - Encerrar\n");
+        printf("\n 5 - Listar clientes"); // <- nova opção adicionada aqui
+        printf("\n 6 - Simular uma locação");
+        printf("\n 7 - Cadastrar cliente");
+        printf("\n 8 - Encerrar locações");
+        printf("\n 9 - Listar todas as locações ativas");
+        printf("\n10 - Buscar locações ativas por cliente");
+        printf("\n11 - Buscar locações ativas por veículo");
+        printf("\n12 - Listar locações e faturamento por período");
+        printf("\n13 - Encerrar\n");
         printf("\\\----------------------------------------//\n");
         
         printf("\nOpcao: ");
@@ -318,7 +361,6 @@ int menu() {
         switch (opcao) {
             case 1:
                 locar();
-                codigo++;
                 break;
             case 2:
                 cadastrarVeiculo();
@@ -330,27 +372,30 @@ int menu() {
                 listarVeiculo();
                 break;
             case 5:
-                simular();
+                listarClientes(); // <- nova chamada aqui
                 break;
             case 6:
-                cadastrarCliente();
+                simular();
                 break;
             case 7:
-                encerrarLocacao();
+                cadastrarCliente();
                 break;
             case 8:
-                listarLocacoesAtivas();
+                encerrarLocacao();
                 break;
             case 9:
-                buscarLocacoesAtivasPorCliente();
+                listarLocacoesAtivas();
                 break;
             case 10:
-                buscarLocacoesAtivasPorVeiculo();
+                buscarLocacoesAtivasPorCliente();
                 break;
             case 11:
-                listarLocacoesEFaturamentoPorPeriodo();
+                buscarLocacoesAtivasPorVeiculo();
                 break;
             case 12:
+                listarLocacoesEFaturamentoPorPeriodo();
+                break;
+            case 13:
                 encerrar();
                 return 0;
             default:
@@ -359,6 +404,7 @@ int menu() {
         }
     }
 }
+
 
 
 int main() {
