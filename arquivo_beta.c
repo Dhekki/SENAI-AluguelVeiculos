@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
+
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
 #define MAXLOCACOES 200
@@ -103,6 +105,17 @@ int validarPlaca(char placa[]) {
     
     return 1;
 }
+void listarClientes() {
+    printf("\\------------------ Clientes ------------------//\n");
+    for (int i = 0; i < qntdClientes; i++) {
+        printf("\n %d - Cliente: %s", i + 1, clientes[i].nome);
+        printf("\n Código: %d", clientes[i].codigo);
+        printf("\n CPF: %s", clientes[i].cpf);
+        printf("\n-----------------------------------------------");
+    }
+    printf("\n");
+    system("pause");
+}
 
 void locar(){
     if (qntdVeiculos==0 || qntdClientes==0){
@@ -130,8 +143,8 @@ void locar(){
             
             printf("Data Final da Locação:");
             fgets(locacoes[qntdlocacoes].dataFim,11,stdin);
-            qutdlocacoes++;
-            return(0);
+            qntdlocacoes++;
+            return;
             case 2 :
             listarVeiculo();
             break;
@@ -190,9 +203,6 @@ void cadastrarVeiculo(){
 }
 void removerVeiculo(){
 }
-void listarclientes(){
-
-}
 void listarVeiculo(){
 }
 void simular(){
@@ -206,7 +216,7 @@ void cadastrarCliente(){
     }
     
     int clienteIndex = qntdClientes;
-    printf("\\----------------------------------------//\n");
+    printf("\\\\----------------------------------------//\n");
     printf("\nCadastrar Novo Cliente:\n");
     
     clientes[clienteIndex].codigo = clienteIndex + 1;
@@ -223,28 +233,28 @@ void cadastrarCliente(){
         if (strlen(clientes[clienteIndex].cpf) != 11) printf("CPF Inválido!\n");
     } while (strlen(clientes[clienteIndex].cpf) != 11);
 
-    
     printf("Senha: ");
     fgets(clientes[clienteIndex].senha, sizeof(clientes[clienteIndex].senha), stdin);
     clientes[clienteIndex].senha[strcspn(clientes[clienteIndex].senha, "\n")] = '\0';
     
+    qntdClientes++;  
     salvarDados();
     printf("\nCliente Cadastrado com Sucesso!\n");
     sleep(1);
-
     printf("\\----------------------------------------//\n");
 }
+
 void encerrarLocacao(){
 }
 void listarLocacoesAtivas(){
-	if (qutdlocacoes==0){
+	if (qntdlocacoes==0){
 	printf("\nAinda Não há Locações !");
 	sleep(3);
 	system("cls");
 	}
 	else{
 	printf("\n===== Locações =====\n");
-	for(int i=0;i<qutdlocacoes;i++){
+	for(int i=0;i<qntdlocacoes;i++){
 		int idcliente,idveiculo;
 		idcliente = locacoes[i].codigoCliente;
 		idveiculo = locacoes[i].codigoVeiculo;
@@ -256,7 +266,7 @@ void listarLocacoesAtivas(){
 void buscarLocacoesAtivasPorCliente(){
 }
 void buscarLocacoesAtivasPorVeiculo(){
-    if (qutdlocacoes==0){
+    if (qntdlocacoes==0){
         printf("\nAinda Não há Locações !");
         sleep(3);
         system("cls");
@@ -271,14 +281,14 @@ void buscarLocacoesAtivasPorVeiculo(){
     fgets(carro, sizeof(carro), stdin);
     carro[strcspn(carro, "\n")] = 0;
 
-    for(int i=0;i<qutdlocacoes;i++){
+    for(int i=0;i<qntdlocacoes;i++){
         if(_stricmp(veiculos[i].modelo , carro)==0){
             codecar = veiculos[i].codigo;
         }
     }
     printf("\nLocações encontradas: ");
-    for(int i=0;i<qutdlocacoes;i++){
-        for(int j=0;j<qutdlocacoes;j++){
+    for(int i=0;i<qntdlocacoes;i++){
+        for(int j=0;j<qntdlocacoes;j++){
         if(locacoes[i].codigoCliente == clientes[j].codigo){
             strcpy(nomecliente,clientes[j].nome);
             break;
