@@ -282,9 +282,6 @@ void locar() {
     }
 }
 
-
-
-
 void cadastrarVeiculo(){
     limparBuffer();
     int placaValida = 0;
@@ -575,9 +572,6 @@ int menu() {
         clearDelay();
     }
 }
-
-
-
 
 int main() {
     setlocale(LC_ALL, "");
