@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
-#inlcude <time.h>
+#include <time.h>
 
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
@@ -41,6 +41,15 @@ struct Locacao {
 struct Veiculo veiculos[MAXVEICULOS];
 struct Cliente clientes[MAXCLIENTES];
 struct Locacao locacoes[MAXLOCACOES];
+
+void erro(){
+    printf("Opção inválida!\n");
+}
+
+void clearDelay(){
+    sleep(2);
+    system("cls");
+}
 
 void limparBuffer() {
 	fflush(stdout);
@@ -148,10 +157,38 @@ void cadastrarVeiculo(){
 	salvarDados();
 
     printf("\nVeículo Cadastrado com Sucesso!\n");
-    sleep(2);
+    qntdVeiculos++;
     printf("\\----------------------------------------//\n");
 }
 void removerVeiculo(){
+    if (qntdVeiculos == 0) {printf("\nCadastre Algum Carro Primeiro! "); return;}
+
+    printf("\nVeículos Cadastrados no Sistema: ");
+    for (int i =0; i < qntdVeiculos; i++){
+        printf("\nVeículos: %s", veiculos[i].modelo);
+        printf("\nAno: %d", veiculos[i].ano);
+        printf("\nPlaca: %s", veiculos[i].placa);
+        printf("\nCódigo: %d", veiculos[i].codigo);
+        printf("\nPreço por dia: %f\n", veiculos[i].precoPorDia);
+    }
+
+    char buscaRemove[50];
+    int buscaRemoveCodigo;
+    printf("\nDigite o código ou modelo do veículo para ser removido: ");
+    fgets(buscaRemove, 50, stdin);
+    
+    buscaRemoveCodigo = atoi(buscaRemove);
+    
+    buscaRemove[strcspn(buscaRemove, "\n")] = '\0'; // Tou removendo a quebra de linha adicionada ao usar Fgets
+
+    for (int i =0; i < qntdVeiculos; i++){ 
+        if(_stricmp(buscaRemove, veiculos[i].modelo) == 0 || buscaRemoveCodigo == veiculos[i].codigo){
+            printf("\nVeículo %s: Removido com Sucesso!", buscaRemove);
+            veiculos[i] = veiculos[qntdVeiculos -1];
+            qntdVeiculos--;
+            return;
+        }
+    } printf("\nVeículo não encontrado no Sistema! ");
 }
 void listarVeiculo(){
 }
@@ -166,7 +203,7 @@ void cadastrarCliente(){
     }
     
     int clienteIndex = qntdClientes;
-    printf("\\----------------------------------------//\n");
+    printf("\\\\----------------------------------------//\n");
     printf("\nCadastrar Novo Cliente:\n");
     
     clientes[clienteIndex].codigo = clienteIndex + 1;
@@ -192,7 +229,7 @@ void cadastrarCliente(){
     printf("\nCliente Cadastrado com Sucesso!\n");
     sleep(1);
 
-    printf("\\----------------------------------------//\n");
+    printf("\\\\----------------------------------------//\n");
 }
 void encerrarLocacao(){
 }
@@ -214,6 +251,7 @@ void listarLocacoesAtivas(){
 	
 }
 void buscarLocacoesAtivasPorCliente(){
+
 }
 void buscarLocacoesAtivasPorVeiculo(){
     if (codigo==0){
@@ -245,7 +283,7 @@ void buscarLocacoesAtivasPorVeiculo(){
         }}
         if(locacoes[i].codigoVeiculo == codecar){
             printf("\n\n %i- cliente: %s \n Data de inicio: %s\n Término da Locação: %s",locacoes[i].codigoloc,nomecliente,locacoes[i].dataInicio,locacoes[i].dataFim);
-            printf("\\\__________________________//");
+            printf("\\\\__________________________//");
         }
     }
 }
@@ -253,13 +291,11 @@ void buscarLocacoesAtivasPorVeiculo(){
 void listarLocacoesEFaturamentoPorPeriodo(){
 }
 void encerrar(){
-    printf("Encerrando o programa...\n");
-	sleep(1);
-	printf("Encerrando o programa..\n");
-	sleep(1);
-    printf("Encerrando o programa.\n");
-	sleep(1);
-    printf("\nPrograma Encerrado!");
+    printf("\n\nSaindo do Sistema");
+   for (int i =0; i < 5; i++) {
+    printf(".");
+    sleep(2);
+   }
 }
 
 int menu();
@@ -295,7 +331,7 @@ int menu() {
     
     while (1) {
         limparBuffer();
-        printf("\\\----------------------------------------//\n");
+        printf("\\\\----------------------------------------//\n");
         printf("\nMenu:\n");
         
         printf("\n 1 - Fazer uma locação");                       
@@ -310,7 +346,7 @@ int menu() {
         printf("\n 10 - Buscar locações ativas por veículo");
         printf("\n 11 - Listar locações e faturamento por período");
         printf("\n 12 - Encerrar\n");
-        printf("\\\----------------------------------------//\n");
+        printf("\\\\----------------------------------------//\n");
         
         printf("\nOpcao: ");
         scanf("%i", &opcao);
@@ -356,9 +392,10 @@ int menu() {
                 encerrar();
                 return 0;
             default:
-                printf("Opção inválida!\n");
+                erro();
                 break;
         }
+        clearDelay();
     }
 }
 
