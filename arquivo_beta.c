@@ -159,7 +159,6 @@ void locar() {
                     break;
                 }
 
-                // Verifica se veículo existe
                 int indexVeiculo = -1;
                 for (int i = 0; i < qntdVeiculos; i++) {
                     if (veiculos[i].codigo == codigoVeiculo) {
@@ -172,7 +171,6 @@ void locar() {
                     break;
                 }
 
-                // Verifica se veículo já está locado
                 for (int i = 0; i < qntdlocacoes; i++) {
                     if (locacoes[i].codigoVeiculo == codigoVeiculo) {
                         printf("Este veículo já está locado!\n");
@@ -187,7 +185,7 @@ void locar() {
                     break;
                 }
 
-                // Verifica se cliente existe
+                
                 int indexCliente = -1;
                 for (int i = 0; i < qntdClientes; i++) {
                     if (clientes[i].codigo == codigoCliente) {
@@ -216,7 +214,6 @@ void locar() {
 
                 int d1, m1, a1, d2, m2, a2;
 
-                // Usar sscanf direto em variáveis inteiras para validação mais simples
                 if (sscanf(dataInicio, "%d/%d/%d", &d1, &m1, &a1) != 3) {
                     printf("Formato inválido da data de início!\n");
                     break;
@@ -226,7 +223,6 @@ void locar() {
                     break;
                 }
 
-                // Ajuste para tm struct (meses 0-11, anos desde 1900)
                 struct tm inicio = {0}, fim = {0};
                 inicio.tm_mday = d1;
                 inicio.tm_mon = m1 - 1;
@@ -251,7 +247,6 @@ void locar() {
                     break;
                 }
 
-                // Preenche a locação
                 struct Locacao novaLocacao;
                 novaLocacao.codigoloc = qntdlocacoes + 1;
                 novaLocacao.codigoVeiculo = codigoVeiculo;
@@ -343,7 +338,7 @@ void removerVeiculo(){
     
     buscaRemoveCodigo = atoi(buscaRemove);
     
-    buscaRemove[strcspn(buscaRemove, "\n")] = '\0'; // Tou removendo a quebra de linha adicionada ao usar Fgets
+    buscaRemove[strcspn(buscaRemove, "\n")] = '\0'; 
 
     for (int i =0; i < qntdVeiculos; i++){ 
         if(_stricmp(buscaRemove, veiculos[i].modelo) == 0 || buscaRemoveCodigo == veiculos[i].codigo){
