@@ -477,7 +477,123 @@ void buscarLocacoesAtivasPorVeiculo(){
     }
 }
 }
-void listarLocacoesEFaturamentoPorPeriodo(){
+void listarLocacoesEFaturamentoPorPeriodo() {
+    if (qntdLocacoes == 0) {
+        printf("\nNão há locações cadastradas!\n");
+        system("pause");
+        return;
+    }
+
+    char dataInicioStr[15], dataFimStr[15];
+    int d1, m1, a1, d2, m2, a2;
+
+    // Solicitar datas do período
+    printf("\nInforme o período para consulta:");
+    
+    printf("\nData inicial (dd/mm/aaaa): ");
+    fgets(dataInicioStr, sizeof(dataInicioStr), stdin);
+    dataInicioStr[strcspn(dataInicioStr, "\n")] = '\0';
+    
+    if (sscanf(dataInicioStr, "%d/%d/%d", &d1, &m1, &a1) != 3) {
+        printf("Formato de data inválido!\n");
+        system("pause");
+        return;
+    }
+
+    printf("Data final (dd/mm/aaaa): ");
+    fgets(dataFimStr, sizeof(dataFimStr), stdin);
+    dataFimStr[strcspn(dataFimStr, "\n")] = '\0';
+    
+    if (sscanf(dataFimStr, "%d/%d/%d", &d2, &m2, &a2) != 3) {
+        printf("Formato de data inválido!\n");
+        system("pause");
+        return;
+    }
+    system("cls");
+
+    // Converter para time_t para comparação
+    struct tm tm_inicio = {0}, tm_fim = {0};
+    tm_inicio.tm_mday = d1;
+    tm_inicio.tm_mon = m1 - 1;
+    tm_inicio.tm_year = a1 - 1900;
+    
+    tm_fim.tm_mday = d2;
+    tm_fim.tm_mon = m2 - 1;
+    tm_fim.tm_year = a2 - 1900;
+    
+    time_t inicio = mktime(&tm_inicio);
+    time_t fim = mktime(&tm_fim);
+
+    if (inicio == -1 || fim == -1) {
+        printf("Erro ao converter datas!\n");
+        system("pause");
+        return;
+    }
+
+    if (difftime(fim, inicio) < 0) {
+        printf("Data final deve ser após data inicial!\n");
+        system("pause");
+        return;
+    }
+
+    // Listar locações no período e calcular faturamento
+    printf("\n==== Locações no período %s a %s ====\n", dataInicioStr, dataFimStr);
+    
+    float faturamentoTotal = 0;
+    int locacoesEncontradas = 0;
+
+    for (int i = 0; i < qntdLocacoes; i++) {
+        // Converter data da locação para time_t
+        int dl, ml, al;
+        if (sscanf(locacoes[i].dataInicio, "%d/%d/%d", &dl, &ml, &al) != 3) {
+            continue; // Se data inválida, pula
+        }
+
+        struct tm tm_loc = {0};
+        tm_loc.tm_mday = dl;
+        tm_loc.tm_mon = ml - 1;
+        tm_loc.tm_year = al - 1900;
+        time_t dataLoc = mktime(&tm_loc);
+
+        // Verificar se está no período
+        if (dataLoc >= inicio && dataLoc <= fim) {
+            // Encontrar cliente e veículo
+            int clienteIdx = -1, veiculoIdx = -1;
+            
+            for (int j = 0; j < qntdClientes; j++) {
+                if (clientes[j].codigo == locacoes[i].codigoCliente) {
+                    clienteIdx = j;
+                    break;
+                }
+            }
+            
+            for (int j = 0; j < qntdVeiculos; j++) {
+                if (veiculos[j].codigo == locacoes[i].codigoVeiculo) {
+                    veiculoIdx = j;
+                    break;
+                }
+            }
+
+            // Exibir informações
+            printf("\nLocação %d", locacoes[i].codigoloc);
+            printf("\n\nCliente: %s", (clienteIdx != -1) ? clientes[clienteIdx].nome : "N/A");
+            printf("\nVeículo: %s", (veiculoIdx != -1) ? veiculos[veiculoIdx].modelo : "N/A");
+            printf("\nPeríodo: %s a %s", locacoes[i].dataInicio, locacoes[i].dataFim);
+            printf("\nValor: R$ %.2f", locacoes[i].valorTotal);
+            printf("\n----------------------------------\n");
+
+            faturamentoTotal += locacoes[i].valorTotal;
+            locacoesEncontradas++;
+        }
+    }
+
+    if (locacoesEncontradas == 0) {
+        printf("\nNenhuma locação encontrada neste período.\n");
+    } else {
+        printf("\nFaturamento total no período: R$ %.2f\n\n", faturamentoTotal);
+    }
+
+    system("pause");
 }
 void encerrar(){
     printf("\n\nSaindo do Sistema");
