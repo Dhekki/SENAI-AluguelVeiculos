@@ -138,8 +138,9 @@ void locar() {
     while (1) {
         printf("\nEscolha uma opção: ");
         printf("\n1 - Locar");
-        printf("\n2 - Listar Veículos Disponíveis");
-        printf("\n3 - Listar Clientes\nOpção: ");
+        printf("\n2 - Listar veículos disponíveis");
+        printf("\n3 - Listar clientes ");
+        printf("\n4 - Voltar ao menu principal\n\nOpção: ");
         
         fgets(input, sizeof(input), stdin);
         if (sscanf(input, "%d", &op) != 1) {
@@ -270,6 +271,8 @@ void locar() {
             case 3:
                 listarClientes();
                 break;
+            case 4:
+                return;
             default:
                 printf("Opção inválida!\n");
                 break;
@@ -320,16 +323,7 @@ void cadastrarVeiculo(){
     printf("\\----------------------------------------//\n");
 }
 void removerVeiculo(){
-    if (qntdVeiculos == 0) {printf("\nCadastre Algum Carro Primeiro! "); return;}
-
-    printf("\nVeículos Cadastrados no Sistema: ");
-    for (int i =0; i < qntdVeiculos; i++){
-        printf("\nVeículos: %s", veiculos[i].modelo);
-        printf("\nAno: %d", veiculos[i].ano);
-        printf("\nPlaca: %s", veiculos[i].placa);
-        printf("\nCódigo: %d", veiculos[i].codigo);
-        printf("\nPreço por dia: %f\n", veiculos[i].precoPorDia);
-    }
+    listarVeiculo();
 
     char buscaRemove[50];
     int buscaRemoveCodigo;
@@ -350,6 +344,15 @@ void removerVeiculo(){
     } printf("\nVeículo não encontrado no Sistema! ");
 }
 void listarVeiculo(){
+    if (qntdVeiculos == 0) {printf("\nCadastre Algum Carro Primeiro! "); return;}
+        printf("\nVeículos Cadastrados no Sistema: ");
+        for (int i =0; i < qntdVeiculos; i++){
+            printf("\nVeículos: %s", veiculos[i].modelo);
+            printf("\nAno: %d", veiculos[i].ano);
+            printf("\nPlaca: %s", veiculos[i].placa);
+            printf("\nCódigo: %d", veiculos[i].codigo);
+            printf("\nPreço por dia: %.2f\n", veiculos[i].precoPorDia);
+    }
 }
 void simular(){
 }
@@ -459,9 +462,9 @@ void listarLocacoesEFaturamentoPorPeriodo(){
 }
 void encerrar(){
     printf("\n\nSaindo do Sistema");
-   for (int i =0; i < 5; i++) {
+   for (int i = 0; i < 3; i++) {
     printf(".");
-    sleep(2);
+    sleep(1);
    }
 }
 
@@ -494,29 +497,29 @@ int menu() {
     system("cls");
     int opcao;
     printf("Bem-vindo ao sistema de aluguel de veículos!\n");
-    sleep(2);
+    sleep(1);
 
     while (1) {
         limparBuffer();
         printf("\\----------------------------------------//\n");
         printf("\nMenu:\n");
 
-        printf("\n 1 - Fazer uma locação");                       
+        printf("\n 1 - Nova locação");                       
         printf("\n 2 - Cadastrar veículos");
         printf("\n 3 - Remover veículos");
         printf("\n 4 - Listar veículos disponíveis");
-        printf("\n 5 - Listar clientes");
-        printf("\n 6 - Simular uma locação");
-        printf("\n 7 - Cadastrar cliente");
+        printf("\n 5 - Cadastrar cliente");
+        printf("\n 6 - Listar clientes");
+        printf("\n 7 - Simular uma locação");
         printf("\n 8 - Encerrar locações");
         printf("\n 9 - Listar todas as locações ativas");
         printf("\n10 - Buscar locações ativas por cliente");
         printf("\n11 - Buscar locações ativas por veículo");
         printf("\n12 - Listar locações e faturamento por período");
-        printf("\n13 - Encerrar\n");
+        printf("\n13 - Encerrar\n\n");
         printf("\\\\----------------------------------------//\n");
 
-        printf("\nOpcao: ");
+        printf("\nOpção: ");
         scanf("%i", &opcao);
         limparBufferDentro();
 
@@ -534,13 +537,13 @@ int menu() {
                 listarVeiculo();
                 break;
             case 5:
-                listarClientes();
+                cadastrarCliente();
                 break;
             case 6:
-                simular();
+                listarClientes();
                 break;
             case 7:
-                cadastrarCliente();
+                simular();
                 break;
             case 8:
                 encerrarLocacao();
@@ -569,7 +572,7 @@ int menu() {
 }
 
 int main() {
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "portuguese");
     login();
     return (0);
 }
