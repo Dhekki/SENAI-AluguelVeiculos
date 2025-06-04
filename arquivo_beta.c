@@ -15,11 +15,9 @@
 #define ARQUIVO_VEICULOS "veiculos.dat"
 #define ARQUIVO_CLIENTES "clientes.dat"
 #define ARQUIVO_LOCACOES "locacoes.dat"
-#define ARQUIVO_LOCACOES "locacoes.dat"
 
-int qntdLocacoes = 0, qntdClientes = 0, qntdVeiculos = 0;
 // Variáveis Globais (Contadores)
-int qntdlocacoes = 0, qntdClientes = 0, qntdVeiculos = 0;
+int qntdLocacoes = 0, qntdClientes = 0, qntdVeiculos = 0;
 
 // Struct para armazenamento de Dados
 struct Veiculo {
@@ -52,6 +50,7 @@ struct Locacao locacoes[MAXLOCACOES];
 
 // Protótipo de Função
 void listarVeiculo();
+int menu();
 
 // Funções Auxiliáres
 void pressAnyKey() {
@@ -102,13 +101,6 @@ void salvarDados() {
         fwrite(locacoes, sizeof(struct Locacao), qntdLocacoes, arquivo);
         fclose(arquivo);
     }
-
-    arquivo = fopen(ARQUIVO_LOCACOES, "wb");
-    if(arquivo) {
-        fwrite(&qntdlocacoes, sizeof(int), 1, arquivo);
-        fwrite(locacoes, sizeof(struct Locacao), qntdlocacoes, arquivo);
-        fclose(arquivo);
-    }
 }
 
 void carregarDados() {
@@ -134,13 +126,6 @@ void carregarDados() {
         fread(locacoes, sizeof(struct Locacao), qntdLocacoes, arquivo);
         fclose(arquivo);
     }
-
-    arquivo = fopen(ARQUIVO_LOCACOES, "rb");
-    if (arquivo) {
-        fread(&qntdlocacoes, sizeof(int), 1, arquivo);
-        fread(locacoes, sizeof(struct Locacao), qntdlocacoes, arquivo);
-        fclose(arquivo);
-    }
 }
 void limparDados() {
     FILE *arquivo;
@@ -157,7 +142,7 @@ void limparDados() {
         fclose(arquivo);
     }
 
-    // Limpar arquivo de locações
+     // Limpar arquivo de locações
     arquivo = fopen(ARQUIVO_LOCACOES, "wb");
     if (arquivo) {
         fclose(arquivo);
@@ -166,7 +151,7 @@ void limparDados() {
     // Limpar Variáveis Globais
     qntdVeiculos = 0;
     qntdClientes = 0;
-    qntdlocacoes = 0;
+    qntdLocacoes = 0;
 }
 
 int validarPlaca(char placa[]) {
@@ -195,18 +180,6 @@ void listarClientes() {
     }
     printf("\n");
     system("pause");
-}
-
-void listarVeiculo(){
-    if (qntdVeiculos == 0) {printf("\nCadastre Algum Carro Primeiro! "); return;}
-        printf("\nVeÃ­culos Cadastrados no Sistema: ");
-        for (int i =0; i < qntdVeiculos; i++){
-            printf("\nVeÃ­culos: %s", veiculos[i].modelo);
-            printf("\nAno: %d", veiculos[i].ano);
-            printf("\nPlaca: %s", veiculos[i].placa);
-            printf("\nCÃ³digo: %d", veiculos[i].codigo);
-            printf("\nPreÃ§o por dia: %.2f\n", veiculos[i].precoPorDia);
-    }
 }
 
 void locar() {
@@ -483,36 +456,61 @@ void cadastrarCliente(){
 
 void encerrarLocacao(){
 }
-void listarLocacoesAtivas(){
-    if (qntdLocacoes == 0){
-        printf("\nAinda NÃ£o hÃ¡ LocaÃ§Ãµes !");
-        sleep(3);
-        system("cls");
-    if (qntdlocacoes == 0){
-        printf("\nAinda Não há Locações !");
+void listarLocacoesAtivas() {
+    if (qntdLocacoes == 0) {
+        printf("\nAinda não há locações!\n");
+        return;
     }
-    else{
-        printf("\n===== LocaÃ§Ãµes =====\n");
-        for(int i = 0; i < qntdLocacoes; i++){
-        printf("\n===== Locações =====\n");
-        for(int i = 0; i < qntdlocacoes; i++){
-            int idcliente = locacoes[i-1].codigoCliente;
-            int idveiculo = locacoes[i-1].codigoVeiculo;
-            printf("\n %i- cliente : %s \n Veículo: %s \n Data da locação: %s até %s \n Valor Total: R$ %.2f",
-                i + 1,
-                clientes[idcliente].nome,
-                veiculos[idveiculo].modelo,
-                locacoes[i].dataInicio,
-                locacoes[i].dataFim,
-                locacoes[i].valorTotal);
-            printf("\n__________________");
+
+    for (int i = 0; i < qntdClientes; i++) {
+        int clienteTemLocacao = 0;
+
+        // Verifica se o cliente tem alguma locação
+        for (int l = 0; l < qntdLocacoes; l++) {
+            if (locacoes[l].codigoCliente == clientes[i].codigo) {
+                // Só imprime dados do cliente uma vez
+                if (!clienteTemLocacao) {
+                    printf("\n\n===== Informações do Cliente =====");
+                    printf("\n Nome: %s", clientes[i].nome);
+                    printf("\n Senha: %s", clientes[i].senha);
+                    printf("\n CPF: %s", clientes[i].cpf);
+                    printf("\n Código: %d", clientes[i].codigo);
+                    clienteTemLocacao = 1;
+                }
+
+                // Buscar o veículo correspondente
+                for (int v = 0; v < qntdVeiculos; v++) {
+                    if (veiculos[v].codigo == locacoes[l].codigoVeiculo) {
+                        printf("\n\n--- Veículo Alugado ---");
+                        printf("\n Modelo: %s", veiculos[v].modelo);
+                        printf("\n Ano: %d", veiculos[v].ano);
+                        printf("\n Código: %d", veiculos[v].codigo);
+                        printf("\n Placa: %s", veiculos[v].placa);
+                        printf("\n Preço por Dia: R$ %.2f", veiculos[v].precoPorDia);
+                        break;
+                    }
+                }
+
+                // Dados da locação
+                printf("\n\n--- Dados da Locação ---");
+                printf("\n Código do Cliente: %d", locacoes[l].codigoCliente);
+                printf("\n Código da Locação: %d", locacoes[l].codigoloc);
+                printf("\n Código do Veículo: %d", locacoes[l].codigoVeiculo);
+                printf("\n Data Inicial: %s", locacoes[l].dataInicio);
+                printf("\n Data Final: %s", locacoes[l].dataFim);
+                printf("\n Valor Total: R$ %.2f", locacoes[l].valorTotal);
+            }
+        }
+
+        if (clienteTemLocacao) {
+            pressAnyKey();
         }
     }
-    system("pause");
 }
 
+
 void buscarLocacoesAtivasPorCliente() {
-    if (qntdlocacoes == 0){
+    if (qntdLocacoes == 0){
         printf("\nAinda Não há Locações !");
         return;
     }
@@ -544,7 +542,7 @@ void buscarLocacoesAtivasPorCliente() {
 
             // Buscar locações do cliente
             bool locacaoEncontrada = false;
-            for (int l = 0; l < qntdlocacoes; l++) {
+            for (int l = 0; l < qntdLocacoes; l++) {
                 if (locacoes[l].codigoCliente == clientes[i].codigo) {
                     locacaoEncontrada = true;
 
@@ -588,10 +586,6 @@ void buscarLocacoesAtivasPorCliente() {
 
 void buscarLocacoesAtivasPorVeiculo(){
     if (qntdLocacoes==0){
-        printf("\nAinda NÃ£o hÃ¡ LocaÃ§Ãµes !");
-        sleep(3);
-        system("cls");
-    if (qntdlocacoes==0){
         printf("\nAinda Não há Locações !");
         }
     else{
@@ -609,12 +603,10 @@ void buscarLocacoesAtivasPorVeiculo(){
             codecar = veiculos[i].codigo;
         }
     }
-    printf("\nLocaÃ§Ãµes encontradas: ");
+
+    printf("\nLocações encontradas: ");
     for(int i=0;i<qntdLocacoes;i++){
         for(int j=0;j<qntdLocacoes;j++){
-    printf("\nLocações encontradas: ");
-    for(int i=0;i<qntdlocacoes;i++){
-        for(int j=0;j<qntdlocacoes;j++){
         if(locacoes[i].codigoCliente == clientes[j].codigo){
             strcpy(nomecliente,clientes[j].nome);
             break;
@@ -628,7 +620,7 @@ void buscarLocacoesAtivasPorVeiculo(){
 }
 void listarLocacoesEFaturamentoPorPeriodo() {
     if (qntdLocacoes == 0) {
-        printf("\nNÃ£o hÃ¡ locaÃ§Ãµes cadastradas!\n");
+        printf("\nNão há locações cadastradas!\n");
         system("pause");
         return;
     }
@@ -636,15 +628,15 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     char dataInicioStr[15], dataFimStr[15];
     int d1, m1, a1, d2, m2, a2;
 
-    // Solicitar datas do perÃ­odo
-    printf("\nInforme o perÃ­odo para consulta:");
+    // Solicitar datas do período
+    printf("\nInforme o período para consulta:");
     
     printf("\nData inicial (dd/mm/aaaa): ");
     fgets(dataInicioStr, sizeof(dataInicioStr), stdin);
     dataInicioStr[strcspn(dataInicioStr, "\n")] = '\0';
     
     if (sscanf(dataInicioStr, "%d/%d/%d", &d1, &m1, &a1) != 3) {
-        printf("Formato de data invÃ¡lido!\n");
+        printf("Formato de data inválido!\n");
         system("pause");
         return;
     }
@@ -654,13 +646,13 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     dataFimStr[strcspn(dataFimStr, "\n")] = '\0';
     
     if (sscanf(dataFimStr, "%d/%d/%d", &d2, &m2, &a2) != 3) {
-        printf("Formato de data invÃ¡lido!\n");
+        printf("Formato de data inválido!\n");
         system("pause");
         return;
     }
     system("cls");
 
-    // Converter para time_t para comparaÃ§Ã£o
+    // Converter para time_t para comparação
     struct tm tm_inicio = {0}, tm_fim = {0};
     tm_inicio.tm_mday = d1;
     tm_inicio.tm_mon = m1 - 1;
@@ -680,22 +672,22 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     }
 
     if (difftime(fim, inicio) < 0) {
-        printf("Data final deve ser apÃ³s data inicial!\n");
+        printf("Data final deve ser após data inicial!\n");
         system("pause");
         return;
     }
 
-    // Listar locaÃ§Ãµes no perÃ­odo e calcular faturamento
-    printf("\n==== LocaÃ§Ãµes no perÃ­odo %s a %s ====\n", dataInicioStr, dataFimStr);
+    // Listar locações no período e calcular faturamento
+    printf("\n==== Locações no período %s a %s ====\n", dataInicioStr, dataFimStr);
     
     float faturamentoTotal = 0;
     int locacoesEncontradas = 0;
 
     for (int i = 0; i < qntdLocacoes; i++) {
-        // Converter data da locaÃ§Ã£o para time_t
+        // Converter data da locação para time_t
         int dl, ml, al;
         if (sscanf(locacoes[i].dataInicio, "%d/%d/%d", &dl, &ml, &al) != 3) {
-            continue; // Se data invÃ¡lida, pula
+            continue; // Se data inválida, pula
         }
 
         struct tm tm_loc = {0};
@@ -704,9 +696,9 @@ void listarLocacoesEFaturamentoPorPeriodo() {
         tm_loc.tm_year = al - 1900;
         time_t dataLoc = mktime(&tm_loc);
 
-        // Verificar se estÃ¡ no perÃ­odo
+        // Verificar se está no período
         if (dataLoc >= inicio && dataLoc <= fim) {
-            // Encontrar cliente e veÃ­culo
+            // Encontrar cliente e veículo
             int clienteIdx = -1, veiculoIdx = -1;
             
             for (int j = 0; j < qntdClientes; j++) {
@@ -723,11 +715,11 @@ void listarLocacoesEFaturamentoPorPeriodo() {
                 }
             }
 
-            // Exibir informaÃ§Ãµes
-            printf("\nLocaÃ§Ã£o %d", locacoes[i].codigoloc);
+            // Exibir informações
+            printf("\nLocação %d", locacoes[i].codigoloc);
             printf("\n\nCliente: %s", (clienteIdx != -1) ? clientes[clienteIdx].nome : "N/A");
-            printf("\nVeÃ­culo: %s", (veiculoIdx != -1) ? veiculos[veiculoIdx].modelo : "N/A");
-            printf("\nPerÃ­odo: %s a %s", locacoes[i].dataInicio, locacoes[i].dataFim);
+            printf("\nVeículo: %s", (veiculoIdx != -1) ? veiculos[veiculoIdx].modelo : "N/A");
+            printf("\nPeríodo: %s a %s", locacoes[i].dataInicio, locacoes[i].dataFim);
             printf("\nValor: R$ %.2f", locacoes[i].valorTotal);
             printf("\n----------------------------------\n");
 
@@ -737,13 +729,14 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     }
 
     if (locacoesEncontradas == 0) {
-        printf("\nNenhuma locaÃ§Ã£o encontrada neste perÃ­odo.\n");
+        printf("\nNenhuma locação encontrada neste período.\n");
     } else {
-        printf("\nFaturamento total no perÃ­odo: R$ %.2f\n\n", faturamentoTotal);
+        printf("\nFaturamento total no período: R$ %.2f\n\n", faturamentoTotal);
     }
 
     system("pause");
 }
+
 void encerrar(){
     printf("\nSaindo do Sistema");
     for (int i = 0; i < 3; i++) {
@@ -752,8 +745,6 @@ void encerrar(){
    }
    printf("\n\nAgradecemos Por Utilizar nosso Sistema!");
 }
-
-int menu();
 
 void login() {
 	carregarDados();
