@@ -233,6 +233,7 @@ void listarClientes() {
         printf("\n %d - Cliente: %s", i + 1, clientes[i].nome);
         printf("\n Código: %d", clientes[i].codigo);
         printf("\n CPF: %s", clientes[i].cpf);
+        printf(CIANO "\n--------------------------\n" RESET);
     }
 
     pressAnyKey();
@@ -248,7 +249,7 @@ void locar() {
     int op;
 
     while (1) {
-        printf("\nEscolha uma opção: ");
+        printf(CIANO "\nEscolha uma opção: " RESET);
         printf("\n1 - Locar");
         printf("\n2 - Listar veículos disponíveis");
         printf("\n3 - Listar clientes ");
@@ -471,7 +472,7 @@ void listarVeiculo(){
             printf("\nPlaca: %s", veiculos[i].placa);
             printf("\nCódigo: %d", veiculos[i].codigo);
             printf("\nPreço por dia: %.2f\n", veiculos[i].precoPorDia);
-            printf("\n--------------------------\n");
+            printf(CIANO "\n--------------------------\n" RESET);
             pressAnyKey();
     }
 }
@@ -499,7 +500,7 @@ void simular(){
             printf("\nPlaca: %s", veiculos[i].placa);
             printf("\nCódigo: %d", veiculos[i].codigo);
             printf("\nPreço por dia: %.2f\n", veiculos[i].precoPorDia);
-            printf("\n--------------------------\n");
+            printf(CIANO "\n--------------------------\n" RESET);
             break;
         }
     }
