@@ -886,7 +886,7 @@ void encerrar(){
     
     printf(CIANO"\nSaindo do Sistema"RESET);
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 5; i++) {
         printf("%s.%s", cores[i], RESET);
         sleep(1);
     }
