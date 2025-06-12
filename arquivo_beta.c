@@ -520,7 +520,8 @@ void simular(){
 
     printf("\nValor estimado da locação por %d dias: R$ %.2f\n", dias, total);
     printf(AMARELO"\nDeseja Continuar para a Locação? (S/N): "RESET);
-    scanf("%s", confirmarLocacao);
+    fgets(confirmarLocacao, sizeof(confirmarLocacao), stdin);
+    confirmarLocacao[strcspn(confirmarLocacao, "\n")] = '\0';
 
     while(true){
         if (_stricmp(confirmarLocacao, "S") ==0 || _stricmp(confirmarLocacao, "SIM") ==0){
