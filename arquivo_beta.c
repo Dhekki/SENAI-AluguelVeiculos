@@ -751,12 +751,14 @@ void buscarLocacoesAtivasPorVeiculo(){
     int codecar;
 
     limparBuffer();
-    printf("\nDigite o Nome do Veículo: ");
+    printf("\nDigite o Nome ou Código do Veículo: ");
     fgets(carro, sizeof(carro), stdin);
-    carro[strcspn(carro, "\n")] = 0;
+    carro[strcspn(carro, "\n")] = 0;   
+    
+    int codecar2= atoi(carro);
 
     for(int i=0;i<qntdLocacoes;i++){
-        if(_stricmp(veiculos[i].modelo , carro)==0){
+        if(_stricmp(veiculos[i].modelo , carro)==0 || codecar2 == veiculos[i].codigo ){
             codecar = veiculos[i].codigo;
         }
     }
@@ -768,7 +770,7 @@ void buscarLocacoesAtivasPorVeiculo(){
             strcpy(nomecliente,clientes[j].nome);
             break;
         }}
-        if(locacoes[i].codigoVeiculo == codecar){
+        if(locacoes[i].codigoVeiculo == codecar || codecar2 == locacoes[i].codigoVeiculo){
             printf("\n\n %i- cliente: %s \n Data de inicio: %s\n Término da Locação: %s",locacoes[i].codigoloc,nomecliente,locacoes[i].dataInicio,locacoes[i].dataFim);
             printf(AZUL "\n\n\\\\" RESET "__________________________" AZUL "//\n\n" RESET);
         }
