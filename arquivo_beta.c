@@ -950,7 +950,7 @@ int menu() {
         printf("\n12 - Listar locações e faturamento por período");
         printf("\n13 - Limpar Dados");
         printf("\n14 - Encerrar\n\n");
-        printf(AZUL"\\\\"RESET "--------------"AZUL "----------"RESET "----------------"AZUL "//"RESET "\n");
+        printf(AZUL "\\\\" RESET "--------------" AZUL "----------" RESET "----------------" AZUL "//" RESET "\n");
 
         printf(AZUL "\nOpção: " RESET);
         scanf("%i", &opcao);
