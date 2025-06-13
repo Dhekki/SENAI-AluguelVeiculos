@@ -161,7 +161,7 @@ void limparDados() {
     char confirmarApagar[50];
     bool apagar = false;
     printf(AMARELO "\nTem certeza que quer apagar todos os dados? (S/N): " RESET);
-    fgets(confirmarApagar,50,stdin);
+    scanf("%s", confirmarApagar);
     limparBuffer();
 
     while(true){
@@ -170,10 +170,11 @@ void limparDados() {
             break;
         }
         else if(_stricmp(confirmarApagar, "N") ==0 || _stricmp(confirmarApagar, "NÃO") ==0 || _stricmp(confirmarApagar, "NAO") ==0 || _stricmp(confirmarApagar, "Ñ") ==0){
-            break;
+            return;
         }
         else{
             erro();
+            break;
         }
     }
 
@@ -376,7 +377,6 @@ void locar() {
                 printf(VERDE "\nLocação registrada com sucesso!\n" RESET);
                 printf("\nQuantidade de dias: %d\n", dias);
                 printf("Valor total: R$ %.2f\n", novaLocacao.valorTotal);
-                system("pause");
 
                 salvarDados();
                 return;
@@ -555,7 +555,7 @@ void cadastrarCliente(){
     
     int clienteIndex = qntdClientes;
     printf(AZUL "\\\\" RESET "----------------------------------------" AZUL "//\n" RESET);
-    printf("\nCadastrar Novo Cliente\n");
+    printf(CIANO "\nCadastrar Novo Cliente\n" RESET);
     
     clientes[clienteIndex].codigo = clienteIndex + 1;
 
@@ -691,7 +691,7 @@ void buscarLocacoesAtivasPorCliente() {
             clienteEncontrado = true;
             printf("\nCliente: %s Encontrado Com Sucesso!", clientes[i].nome);
 
-            printf(CIANO "\n==== Informações do Cliente ====" RESET);
+            printf(CIANO "\n\n==== Informações do Cliente ====" RESET);
 
             printf(AZUL "\n\nDados do cliente:" RESET);
             printf("\n Nome do cliente: %s", clientes[i].nome);
@@ -770,9 +770,10 @@ void buscarLocacoesAtivasPorVeiculo(){
         }}
         if(locacoes[i].codigoVeiculo == codecar){
             printf("\n\n %i- cliente: %s \n Data de inicio: %s\n Término da Locação: %s",locacoes[i].codigoloc,nomecliente,locacoes[i].dataInicio,locacoes[i].dataFim);
-            printf(AZUL "\\\\" RESET "__________________________" AZUL "//" RESET);
+            printf(AZUL "\n\n\\\\" RESET "__________________________" AZUL "//\n\n" RESET);
         }
     }
+            system("pause");
 }
 }
 void listarLocacoesEFaturamentoPorPeriodo() {
@@ -880,6 +881,7 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     if (locacoesEncontradas == 0) {
         printf("\nNenhuma locação encontrada neste período.\n");
     } else {
+    	printf("\nQuantidade de locações no período: %d", locacoesEncontradas);
         printf("\nFaturamento total no período: R$ %.2f\n\n", faturamentoTotal);
     }
 
