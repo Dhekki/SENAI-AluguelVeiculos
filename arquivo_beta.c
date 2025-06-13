@@ -916,7 +916,7 @@ void login() {
         email[strcspn(email, "\n")] = '\0';
         senha[strcspn(senha, "\n")] = '\0';
 
-        if (strcmp(email, "login@gmail.com") == 0 && strcmp(senha, "12345") == 0) {
+        if (strcmp(email, "admin@locafast.com") == 0 && strcmp(senha, "admin123") == 0) {
             menu();
             break;
         } else {
@@ -950,7 +950,7 @@ int menu() {
         printf("\n12 - Listar locações e faturamento por período");
         printf("\n13 - Limpar Dados");
         printf("\n14 - Encerrar\n\n");
-        printf(AZUL "\\\\" RESET "--------------" AZUL "----------" RESET "----------------" AZUL "//" RESET "\n");
+        printf(AZUL"\\\\"RESET "--------------"AZUL "----------"RESET "----------------"AZUL "//"RESET "\n");
 
         printf(AZUL "\nOpção: " RESET);
         scanf("%i", &opcao);
