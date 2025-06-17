@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
@@ -61,10 +62,10 @@ void pressAnyKey() {
 }
 
 void erro(){
-    printf(VERMELHO "Opção inválida! Digite Novamente\n" RESET);
+    printf(VERMELHO "Opção inválida! Digite Novamente!\n" RESET);
 }
 void erroCadastro() {
-    printf(VERMELHO "\nCadastre Veículos/Clientes Primeiro !\n" RESET);
+    printf(VERMELHO "\nCadastre Veículos/Clientes Primeiro!\n" RESET);
 }
 void erroCodigo(){
     printf(VERMELHO "\nCódigo Inválido!" RESET);
@@ -79,13 +80,13 @@ void erroLocar(){
     printf(VERMELHO "\nLocação Não encontrada no Sistema!" RESET);
 }
 void erroCadastrarVeiculo(){
-    printf(VERMELHO"Cadastre Algum Veículo Primeiro!"RESET);
+    printf(VERMELHO "Cadastre Algum Veículo Primeiro!" RESET);
 }
 void erroCadastrarLocacao(){
-    printf(VERMELHO"Cadastre Alguma Locação Primeiro!"RESET);
+    printf(VERMELHO "Cadastre Alguma Locação Primeiro!" RESET);
 }
 void erroCadastrarCliente(){
-    printf(VERMELHO"Cadastre Algum Cliente Primeiro! "RESET);
+    printf(VERMELHO "Cadastre Algum Cliente Primeiro! " RESET);
 }
 void clearDelay(){
     sleep(2);
@@ -160,8 +161,8 @@ void limparDados() {
     
     char confirmarApagar[50];
     bool apagar = false;
-    printf(AMARELO"\nTem certeza que quer apagar todos os dados? (S/N): "RESET);
-    fgets(confirmarApagar,50,stdin);
+    printf(AMARELO "\nTem certeza que quer apagar todos os dados? (S/N): " RESET);
+    scanf("%s", confirmarApagar);
     limparBuffer();
 
     while(true){
@@ -170,20 +171,21 @@ void limparDados() {
             break;
         }
         else if(_stricmp(confirmarApagar, "N") ==0 || _stricmp(confirmarApagar, "NÃO") ==0 || _stricmp(confirmarApagar, "NAO") ==0 || _stricmp(confirmarApagar, "Ñ") ==0){
-            break;
+            return;
         }
         else{
             erro();
+            break;
         }
     }
 
     if(apagar){
-        printf("\n\nApagando Dados do Sistema");
-        for (int i = 0; i < 3; i++){
-            printf(".");
+        printf(AMARELO"\nApagando Dados do Sistema"RESET);
+        for (int i = 0; i < 5; i++){
+            printf(AMARELO"."RESET);
             sleep(1);
         }
-        printf("\nDados Apagados com Sucesso! ");
+        printf(VERDE"\nDados Apagados com Sucesso! "RESET);
          FILE *arquivo;
 
     arquivo = fopen(ARQUIVO_VEICULOS, "wb");
@@ -228,7 +230,7 @@ void listarClientes() {
         erroCadastrarCliente();
         return;
     }
-    printf(AZUL "====" RESET " Clientes " AZUL "====\n"RESET);
+    printf(AZUL "====" RESET " Clientes " AZUL "====\n" RESET);
     for (int i = 0; i < qntdClientes; i++) {
         printf("\n %d - Cliente: %s", i + 1, clientes[i].nome);
         printf("\n Código: %d", clientes[i].codigo);
@@ -236,7 +238,6 @@ void listarClientes() {
         printf(CIANO "\n--------------------------\n" RESET);
     }
 
-    pressAnyKey();
 }
 
 void locar() {
@@ -376,9 +377,9 @@ void locar() {
                 printf(VERDE "\nLocação registrada com sucesso!\n" RESET);
                 printf("\nQuantidade de dias: %d\n", dias);
                 printf("Valor total: R$ %.2f\n", novaLocacao.valorTotal);
-                system("pause");
 
                 salvarDados();
+                sleep(2);
                 return;
             }
             case 2:
@@ -406,10 +407,10 @@ void cadastrarVeiculo(){
     }
     
     int veiculoIndex = qntdVeiculos;
-    printf(AZUL "\\\\" RESET "----------------------------------------" AZUL "//\n"RESET);
-    printf(CIANO"\nCadastrar Novo Veículo\n"RESET);
+    printf(AZUL "\\\\" RESET "----------------------------------------" AZUL "//\n" RESET);
+    printf(CIANO "\nCadastrar Novo Veículo\n" RESET);
     
-    veiculos[veiculoIndex].codigo = veiculoIndex + 1;
+    veiculos[veiculoIndex].codigo = ((int)time(NULL) % 100000) + veiculoIndex;
 
     printf("Modelo: ");
     fgets(veiculos[veiculoIndex].modelo, sizeof(veiculos[veiculoIndex].modelo), stdin);
@@ -426,7 +427,7 @@ void cadastrarVeiculo(){
 
         placaValida = validarPlaca(veiculos[veiculoIndex].placa);
 
-        if (!placaValida) printf(AMARELO"Placa invalida! Use o formato ABC1D23 ou ABC1234\n"RESET);
+        if (!placaValida) printf(AMARELO "Placa invalida! Use o formato ABC1D23 ou ABC1234\n" RESET);
     } while (!placaValida);
 
     printf("Valor da diária: ");
@@ -435,7 +436,7 @@ void cadastrarVeiculo(){
 
 	salvarDados();
     system("cls");
-    printf(VERDE"\nVeículo Cadastrado com Sucesso!\n"RESET);
+    printf(VERDE "\nVeículo Cadastrado com Sucesso!\n" RESET);
 }
 void removerVeiculo(){
     if (qntdVeiculos == 0){
@@ -450,7 +451,7 @@ void removerVeiculo(){
     
     for (int i =0; i < qntdVeiculos; i++){ 
         if(buscaRemoveCodigo == veiculos[i].codigo){
-            printf(VERDE"\nVeículo Removido com Sucesso!"RESET);
+            printf(VERDE "\nVeículo Removido com Sucesso!" RESET);
             veiculos[i] = veiculos[qntdVeiculos -1];
             qntdVeiculos--;
             salvarDados();
@@ -465,7 +466,7 @@ void listarVeiculo(){
         clearDelay();
 		return;
     }
-        printf(CIANO"\n==== Veículos Cadastrados no Sistema ====\n"RESET);
+        printf(CIANO "\n==== Veículos Cadastrados no Sistema ====\n" RESET);
         for (int i =0; i < qntdVeiculos; i++){
             printf("\nVeículo: %s", veiculos[i].modelo);
             printf("\nAno: %d", veiculos[i].ano);
@@ -473,7 +474,6 @@ void listarVeiculo(){
             printf("\nCódigo: %d", veiculos[i].codigo);
             printf("\nPreço por dia: %.2f\n", veiculos[i].precoPorDia);
             printf(CIANO "\n--------------------------\n" RESET);
-            pressAnyKey();
     }
 }
 void simular(){
@@ -484,7 +484,7 @@ void simular(){
 
     listarVeiculo();
 
-    printf(CIANO"\n==== Simulação ===="RESET);
+    printf(CIANO "\n==== Simulação ====" RESET);
     int codigoVeiculo, dias;
     printf("\n\nCódigo do veículo: ");
     scanf("%d", &codigoVeiculo);
@@ -494,7 +494,7 @@ void simular(){
     for (int i = 0; i < qntdVeiculos; i++) {
         if (veiculos[i].codigo == codigoVeiculo) {
             indexVeiculo = i;
-            printf(CIANO"\nVeículo Selecionado\n"RESET);
+            printf(CIANO "\nVeículo Selecionado\n" RESET);
             printf("\nVeículo: %s", veiculos[i].modelo);
             printf("\nAno: %d", veiculos[i].ano);
             printf("\nPlaca: %s", veiculos[i].placa);
@@ -523,7 +523,7 @@ void simular(){
     char confirmarLocacao[50];
 
     printf("\nValor estimado da locação por %d dias: R$ %.2f\n", dias, total);
-    printf(AMARELO"\nDeseja Continuar para a Locação? (S/N): "RESET);
+    printf(AMARELO "\nDeseja Continuar para a Locação? (S/N): " RESET);
     fgets(confirmarLocacao, sizeof(confirmarLocacao), stdin);
     confirmarLocacao[strcspn(confirmarLocacao, "\n")] = '\0';
 
@@ -537,6 +537,7 @@ void simular(){
         }
         else{
             erro();
+            break;
         }
     }
     
@@ -555,7 +556,7 @@ void cadastrarCliente(){
     
     int clienteIndex = qntdClientes;
     printf(AZUL "\\\\" RESET "----------------------------------------" AZUL "//\n" RESET);
-    printf("\nCadastrar Novo Cliente\n");
+    printf(CIANO "\nCadastrar Novo Cliente\n" RESET);
     
     clientes[clienteIndex].codigo = clienteIndex + 1;
 
@@ -577,7 +578,7 @@ void cadastrarCliente(){
     
     qntdClientes++;  
     salvarDados();
-    printf(VERDE"\nCliente Cadastrado com Sucesso!\n"RESET);
+    printf(VERDE "\nCliente Cadastrado com Sucesso!\n" RESET);
     sleep(1);
 
     printf(AZUL "\\" RESET "----------------------------------------" AZUL "//" RESET "\n");
@@ -607,7 +608,7 @@ void encerrarLocacao(){
         return;
     }
 
-    printf(VERDE"\nLocação encerrada com sucesso!"RESET);
+    printf(VERDE "\nLocação encerrada com sucesso!" RESET);
     printf("\nCliente: %d", locacoes[indexLocacao].codigoCliente);
     printf("\nVeículo: %d", locacoes[indexLocacao].codigoVeiculo);
     printf("\nData início: %s", locacoes[indexLocacao].dataInicio);
@@ -634,7 +635,7 @@ void listarLocacoesAtivas() {
         for (int l = 0; l < qntdLocacoes; l++) {
             if (locacoes[l].codigoCliente == clientes[i].codigo) {
                 if (!clienteTemLocacao) {
-                    printf(CIANO"\n\n===== Informações do Cliente ====="RESET);
+                    printf(CIANO "\n\n===== Informações do Cliente =====" RESET);
                     printf("\n Nome: %s", clientes[i].nome);
                     printf("\n Senha: %s", clientes[i].senha);
                     printf("\n CPF: %s", clientes[i].cpf);
@@ -644,7 +645,7 @@ void listarLocacoesAtivas() {
 
                 for (int v = 0; v < qntdVeiculos; v++) {
                     if (veiculos[v].codigo == locacoes[l].codigoVeiculo) {
-                        printf(CIANO"\n\n--- Veículo Alugado ---"RESET);
+                        printf(CIANO "\n\n--- Veículo Alugado ---" RESET);
                         printf("\n Modelo: %s", veiculos[v].modelo);
                         printf("\n Ano: %d", veiculos[v].ano);
                         printf("\n Código: %d", veiculos[v].codigo);
@@ -654,7 +655,7 @@ void listarLocacoesAtivas() {
                     }
                 }
 
-                printf(CIANO"\n\n--- Dados da Locação ---"RESET);
+                printf(CIANO "\n\n--- Dados da Locação ---" RESET);
                 printf("\n Código do Cliente: %d", locacoes[l].codigoCliente);
                 printf("\n Código da Locação: %d", locacoes[l].codigoloc);
                 printf("\n Código do Veículo: %d", locacoes[l].codigoVeiculo);
@@ -664,7 +665,7 @@ void listarLocacoesAtivas() {
             }
         }
     }
-            pressAnyKey();
+    printf("\n");
 }
 
 
@@ -691,9 +692,9 @@ void buscarLocacoesAtivasPorCliente() {
             clienteEncontrado = true;
             printf("\nCliente: %s Encontrado Com Sucesso!", clientes[i].nome);
 
-            printf(CIANO"\n==== Informações do Cliente ===="RESET);
+            printf(CIANO "\n\n==== Informações do Cliente ====" RESET);
 
-            printf(AZUL"\n\nDados do cliente:"RESET);
+            printf(AZUL "\n\nDados do cliente:" RESET);
             printf("\n Nome do cliente: %s", clientes[i].nome);
             printf("\n Senha: %s", clientes[i].senha);
             printf("\n CPF: %s", clientes[i].cpf);
@@ -706,7 +707,7 @@ void buscarLocacoesAtivasPorCliente() {
 
                     for (int v = 0; v < qntdVeiculos; v++) {
                         if (veiculos[v].codigo == locacoes[l].codigoVeiculo) {
-                            printf(AZUL"\n\nDados do Veículo Alugado:"RESET);
+                            printf(AZUL "\n\nDados do Veículo Alugado:" RESET);
                             printf("\n Modelo do Veículo: %s", veiculos[v].modelo);
                             printf("\n Ano do Veículo: %d", veiculos[v].ano);
                             printf("\n Código do Veículo: %d", veiculos[v].codigo);
@@ -716,7 +717,7 @@ void buscarLocacoesAtivasPorCliente() {
                         }
                     }
 
-                    printf(AZUL"\n\nDados da Locação:"RESET);
+                    printf(AZUL "\n\nDados da Locação:" RESET);
                     printf("\n Código do Cliente: %d", locacoes[l].codigoCliente);
                     printf("\n Código da Locação: %d", locacoes[l].codigoloc);
                     printf("\n Código do Veículo: %d", locacoes[l].codigoVeiculo);
@@ -730,7 +731,6 @@ void buscarLocacoesAtivasPorCliente() {
                 erroLocar();
             }
 
-            pressAnyKey();
             break;
         }
     }
@@ -747,16 +747,18 @@ void buscarLocacoesAtivasPorVeiculo(){
         }
     else{
     limparBuffer();
+    listarLocacoesAtivas();
     char carro[50],nomecliente[60];
     int codecar;
 
-    limparBuffer();
-    printf("\nDigite o Nome do Veículo: ");
+    printf("\nDigite o Nome ou Código do Veículo: ");
     fgets(carro, sizeof(carro), stdin);
-    carro[strcspn(carro, "\n")] = 0;
+    carro[strcspn(carro, "\n")] = 0;   
+    
+    int codecar2= atoi(carro);
 
     for(int i=0;i<qntdLocacoes;i++){
-        if(_stricmp(veiculos[i].modelo , carro)==0){
+        if(_stricmp(veiculos[i].modelo , carro)==0 || codecar2 == veiculos[i].codigo ){
             codecar = veiculos[i].codigo;
         }
     }
@@ -768,9 +770,9 @@ void buscarLocacoesAtivasPorVeiculo(){
             strcpy(nomecliente,clientes[j].nome);
             break;
         }}
-        if(locacoes[i].codigoVeiculo == codecar){
+        if(locacoes[i].codigoVeiculo == codecar || codecar2 == locacoes[i].codigoVeiculo){
             printf("\n\n %i- cliente: %s \n Data de inicio: %s\n Término da Locação: %s",locacoes[i].codigoloc,nomecliente,locacoes[i].dataInicio,locacoes[i].dataFim);
-            printf(AZUL"\\\\"RESET"__________________________"AZUL"//"RESET);
+            printf(AZUL "\n\n\\\\" RESET "__________________________" AZUL "//\n\n" RESET);
         }
     }
 }
@@ -820,18 +822,18 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     time_t fim = mktime(&tm_fim);
 
     if (inicio == -1 || fim == -1) {
-        printf(VERMELHO"Erro ao converter datas!\n"RESET);
+        printf(VERMELHO "Erro ao converter datas!\n" RESET);
         system("pause");
         return;
     }
 
     if (difftime(fim, inicio) < 0) {
-        printf(AMARELO"Data final deve ser após data inicial!\n"RESET);
+        printf(AMARELO "Data final deve ser após data inicial!\n" RESET);
         system("pause");
         return;
     }
 
-    printf(AZUL"\n===="RESET" Locações no período %s a %s "AZUL"====\n"RESET, dataInicioStr, dataFimStr);
+    printf(AZUL "\n====" RESET " Locações no período %s a %s " AZUL "====\n" RESET, dataInicioStr, dataFimStr);
     
     float faturamentoTotal = 0;
     int locacoesEncontradas = 0;
@@ -870,7 +872,7 @@ void listarLocacoesEFaturamentoPorPeriodo() {
             printf("\nVeículo: %s", (veiculoIdx != -1) ? veiculos[veiculoIdx].modelo : "N/A");
             printf("\nPeríodo: %s a %s", locacoes[i].dataInicio, locacoes[i].dataFim);
             printf("\nValor: R$ %.2f", locacoes[i].valorTotal);
-            printf(AZUL"\n----------------------------------\n"RESET);
+            printf(AZUL "\n----------------------------------\n" RESET);
 
             faturamentoTotal += locacoes[i].valorTotal;
             locacoesEncontradas++;
@@ -880,6 +882,7 @@ void listarLocacoesEFaturamentoPorPeriodo() {
     if (locacoesEncontradas == 0) {
         printf("\nNenhuma locação encontrada neste período.\n");
     } else {
+    	printf("\nQuantidade de locações no período: %d", locacoesEncontradas);
         printf("\nFaturamento total no período: R$ %.2f\n\n", faturamentoTotal);
     }
 
@@ -889,7 +892,7 @@ void listarLocacoesEFaturamentoPorPeriodo() {
 void encerrar(){
     const char *cores[] = {VERMELHO, VERDE, AMARELO, AZUL, MAGENTA};
     
-    printf(CIANO"\nSaindo do Sistema"RESET);
+    printf(CIANO "\nSaindo do Sistema" RESET);
 
     for (int i = 0; i < 5; i++) {
         printf("%s.%s", cores[i], RESET);
@@ -901,9 +904,9 @@ void encerrar(){
 void login() {
 	carregarDados();
 
-    printf(AZUL"\n==========================="RESET);
+    printf(AZUL "\n===========================" RESET);
     printf("\n         LOCAFAST       ");
-    printf(AZUL"\n==========================="RESET);
+    printf(AZUL "\n===========================" RESET);
     char email[50], senha[40];
     printf("\nLogin");
 
@@ -916,11 +919,11 @@ void login() {
         email[strcspn(email, "\n")] = '\0';
         senha[strcspn(senha, "\n")] = '\0';
 
-        if (strcmp(email, "login@gmail.com") == 0 && strcmp(senha, "12345") == 0) {
+        if (strcmp(email, "admin@locafast.com") == 0 && strcmp(senha, "admin123") == 0) {
             menu();
             break;
         } else {
-            printf(AMARELO"\nE-mail ou senha incorreta!\n"RESET);
+            printf(AMARELO "\nE-mail ou senha incorreta!\n" RESET);
         }
     }
 }
@@ -928,13 +931,13 @@ void login() {
 int menu() {
     system("cls");
     int opcao;
-    printf(VERDE"Bem-vindo ao sistema de aluguel de veículos!\n"RESET);
+    printf(VERDE" Bem-vindo ao sistema de aluguel de veículos!\n" RESET);
     sleep(2);
 
     while (1) {
         limparBuffer();
-        printf(AZUL"\\\\"RESET"--------------"AZUL"----------"RESET"----------------"AZUL"//"RESET"\n");
-        printf(CIANO"\nMenu:\n"RESET);
+        printf(AZUL "\\\\" RESET"--------------" AZUL "----------" RESET "----------------" AZUL "//" RESET "\n");
+        printf(CIANO "\nMenu:\n" RESET);
 
         printf("\n 1 - Nova locação");                       
         printf("\n 2 - Cadastrar veículos");
@@ -950,9 +953,9 @@ int menu() {
         printf("\n12 - Listar locações e faturamento por período");
         printf("\n13 - Limpar Dados");
         printf("\n14 - Encerrar\n\n");
-        printf(AZUL"\\\\"RESET"--------------"AZUL"----------"RESET"----------------"AZUL"//"RESET"\n");
+        printf(AZUL "\\\\" RESET "--------------" AZUL "----------" RESET "----------------" AZUL "//" RESET "\n");
 
-        printf(AZUL"\nOpção: "RESET);
+        printf(AZUL "\nOpção: " RESET);
         scanf("%i", &opcao);
         limparBufferDentro();
 
@@ -968,12 +971,14 @@ int menu() {
                 break;
             case 4:
                 listarVeiculo();
+                pressAnyKey();
                 break;
             case 5:
                 cadastrarCliente();
                 break;
             case 6:
                 listarClientes();
+                pressAnyKey();
                 break;
             case 7:
                 simular();
@@ -983,12 +988,15 @@ int menu() {
                 break;
             case 9:
                 listarLocacoesAtivas();
+                pressAnyKey();
                 break;
             case 10:
                 buscarLocacoesAtivasPorCliente();
+                pressAnyKey();
                 break;
             case 11:
                 buscarLocacoesAtivasPorVeiculo();
+                pressAnyKey();
                 break;
             case 12:
                 listarLocacoesEFaturamentoPorPeriodo();
@@ -1008,7 +1016,7 @@ int menu() {
 }
 
 int main() {
-    setlocale(LC_ALL, "portuguese");
+    setlocale(LC_ALL, "");
     login();
     return (0);
 }
