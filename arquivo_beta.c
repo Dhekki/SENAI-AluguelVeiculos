@@ -10,7 +10,7 @@
 
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
-#define MAXLOCACOES 200
+#define MAXLOCACOES 100
 #define ARQUIVO_VEICULOS "veiculos.dat"
 #define ARQUIVO_CLIENTES "clientes.dat"
 #define ARQUIVO_LOCACOES "locacoes.dat"
