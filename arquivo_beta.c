@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
@@ -61,10 +62,10 @@ void pressAnyKey() {
 }
 
 void erro(){
-    printf(VERMELHO "Opção inválida! Digite Novamente\n" RESET);
+    printf(VERMELHO "Opção inválida! Digite Novamente!\n" RESET);
 }
 void erroCadastro() {
-    printf(VERMELHO "\nCadastre Veículos/Clientes Primeiro !\n" RESET);
+    printf(VERMELHO "\nCadastre Veículos/Clientes Primeiro!\n" RESET);
 }
 void erroCodigo(){
     printf(VERMELHO "\nCódigo Inválido!" RESET);
@@ -179,12 +180,12 @@ void limparDados() {
     }
 
     if(apagar){
-        printf("\n\nApagando Dados do Sistema");
-        for (int i = 0; i < 3; i++){
-            printf(".");
+        printf(AMARELO"\nApagando Dados do Sistema"RESET);
+        for (int i = 0; i < 5; i++){
+            printf(AMARELO"."RESET);
             sleep(1);
         }
-        printf("\nDados Apagados com Sucesso! ");
+        printf(VERDE"\nDados Apagados com Sucesso! "RESET);
          FILE *arquivo;
 
     arquivo = fopen(ARQUIVO_VEICULOS, "wb");
@@ -237,7 +238,6 @@ void listarClientes() {
         printf(CIANO "\n--------------------------\n" RESET);
     }
 
-    pressAnyKey();
 }
 
 void locar() {
@@ -379,6 +379,7 @@ void locar() {
                 printf("Valor total: R$ %.2f\n", novaLocacao.valorTotal);
 
                 salvarDados();
+                sleep(2);
                 return;
             }
             case 2:
@@ -409,7 +410,7 @@ void cadastrarVeiculo(){
     printf(AZUL "\\\\" RESET "----------------------------------------" AZUL "//\n" RESET);
     printf(CIANO "\nCadastrar Novo Veículo\n" RESET);
     
-    veiculos[veiculoIndex].codigo = veiculoIndex + 1;
+    veiculos[veiculoIndex].codigo = ((int)time(NULL) % 100000) + veiculoIndex;
 
     printf("Modelo: ");
     fgets(veiculos[veiculoIndex].modelo, sizeof(veiculos[veiculoIndex].modelo), stdin);
@@ -473,7 +474,6 @@ void listarVeiculo(){
             printf("\nCódigo: %d", veiculos[i].codigo);
             printf("\nPreço por dia: %.2f\n", veiculos[i].precoPorDia);
             printf(CIANO "\n--------------------------\n" RESET);
-            pressAnyKey();
     }
 }
 void simular(){
@@ -537,6 +537,7 @@ void simular(){
         }
         else{
             erro();
+            break;
         }
     }
     
@@ -664,7 +665,7 @@ void listarLocacoesAtivas() {
             }
         }
     }
-            pressAnyKey();
+    printf("\n");
 }
 
 
@@ -730,7 +731,6 @@ void buscarLocacoesAtivasPorCliente() {
                 erroLocar();
             }
 
-            pressAnyKey();
             break;
         }
     }
@@ -747,10 +747,10 @@ void buscarLocacoesAtivasPorVeiculo(){
         }
     else{
     limparBuffer();
+    listarLocacoesAtivas();
     char carro[50],nomecliente[60];
     int codecar;
 
-    limparBuffer();
     printf("\nDigite o Nome ou Código do Veículo: ");
     fgets(carro, sizeof(carro), stdin);
     carro[strcspn(carro, "\n")] = 0;   
@@ -775,7 +775,6 @@ void buscarLocacoesAtivasPorVeiculo(){
             printf(AZUL "\n\n\\\\" RESET "__________________________" AZUL "//\n\n" RESET);
         }
     }
-            system("pause");
 }
 }
 void listarLocacoesEFaturamentoPorPeriodo() {
@@ -972,12 +971,14 @@ int menu() {
                 break;
             case 4:
                 listarVeiculo();
+                pressAnyKey();
                 break;
             case 5:
                 cadastrarCliente();
                 break;
             case 6:
                 listarClientes();
+                pressAnyKey();
                 break;
             case 7:
                 simular();
@@ -987,12 +988,15 @@ int menu() {
                 break;
             case 9:
                 listarLocacoesAtivas();
+                pressAnyKey();
                 break;
             case 10:
                 buscarLocacoesAtivasPorCliente();
+                pressAnyKey();
                 break;
             case 11:
                 buscarLocacoesAtivasPorVeiculo();
+                pressAnyKey();
                 break;
             case 12:
                 listarLocacoesEFaturamentoPorPeriodo();
