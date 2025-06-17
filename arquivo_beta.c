@@ -347,12 +347,18 @@ void locar() {
 
                 time_t t_inicio = mktime(&inicio);
                 time_t t_fim = mktime(&fim);
+		time_t agora = time(NULL);
 
                 if (t_inicio == -1 || t_fim == -1) {
                     printf(VERMELHO "Erro ao converter datas!\n" RESET);
                     break;
                 }
 
+		if (difftime(t_inicio, agora) < 0) {
+    			printf(VERMELHO "Data inválida! A locação não pode ter início no passado.\n" RESET);
+    			break;
+		}
+		
                 double diff_secs = difftime(t_fim, t_inicio);
                 int dias = (int)(diff_secs / (60 * 60 * 24));
 
