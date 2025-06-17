@@ -6,7 +6,6 @@
 #include <ctype.h>
 #include <time.h>
 #include <stdbool.h>
-#include <time.h>
 
 #define MAXVEICULOS 100
 #define MAXCLIENTES 100
