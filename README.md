@@ -18,13 +18,36 @@ Criar um sistema em C para simular o funcionamento básico de uma **empresa de a
 
 ## 👨‍🏫 Proposta do Professor
 
-Desenvolver um código em linguagem C que simule uma **empresa de aluguel de carros**, aplicando os principais conceitos de programação estruturada. A atividade foi proposta para praticar:
+Desenvolver um código em linguagem **C** que simule uma **empresa de aluguel de carros**, aplicando os principais conceitos de **programação estruturada**.  
+A atividade foi proposta para praticar:
 
-- Modularização;
-- Manipulação de dados;
-- Estruturas condicionais e de repetição;
-- Estruturas de dados (como structs e arrays);
-- Funções em C.
+- 📦 Manipulação de dados
+- 🔁 Estruturas condicionais e de repetição
+- 🧱 Estruturas de dados (como `structs` e `arrays`)
+- ⚙️ Funções em C
+
+---
+
+## 🧠 Funcionalidades Requeridas
+
+O sistema deverá ser capaz de:
+
+- 🚗 **Cadastrar veículos**
+- ❌ **Remover veículos**
+- 📋 **Listar veículos**
+- 💼 **Simular locação de veículos**
+- 🧍 **Cadastrar clientes**
+- 📄 **Listar clientes**
+- 🔐 **Realizar login**
+- 🔁 **Cadastrar e finalizar locações**, utilizando os códigos dos veículos e dos clientes
+- 🔎 **Buscar locações por cliente**
+- 🚙 **Buscar locações por veículo**
+- 📆 **Listar todas as locações por período**, com cálculo de faturamento total
+- 📚 **Listar todas as locações registradas**
+
+---
+
+> 💡 *Este projeto foi desenvolvido como parte das atividades práticas do curso Técnico em Desenvolvimento de Sistemas.*
 
 ---
 
@@ -40,15 +63,23 @@ Desenvolver um código em linguagem C que simule uma **empresa de aluguel de car
 
 ## ✅ Funcionalidades Implementadas
 
-- [x] Cadastro de clientes  
-- [x] Cadastro de veículos  
-- [x] Locação de veículos  
-- [x] Encerramento de locações  
-- [x] Listagem e busca de locações  
-- [x] Relatório por período  
-- [x] Simulação de valores  
+- [x] Nova locação  
+- [x] Cadastrar veículos  
+- [x] Remover veículos  
+- [x] Listar veículos disponíveis  
+- [x] Cadastrar clientes  
+- [x] Listar clientes  
+- [x] Simular uma locação  
+- [x] Encerrar locações  
+- [x] Listar todas as locações ativas  
+- [x] Buscar locações ativas por cliente  
+- [x] Buscar locações ativas por veículo  
+- [x] Listar locações por período com cálculo de faturamento  
+- [x] Limpar dados  
+- [x] Encerrar sistema  
 
-*(Conforme forem sendo concluídas novas funções, essa lista pode ser atualizada.)*
+> *(Conforme forem sendo concluídas novas funções ou melhorias, essa lista pode ser atualizada.)*
+
 
 ---
 
